@@ -16,3 +16,7 @@ pom.xml.asc
 /.env
 .clj-kondo
 .lsp
+.shadow-cljs
+.cpcache
+.calva
+node_modules
