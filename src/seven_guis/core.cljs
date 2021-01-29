@@ -3,7 +3,9 @@
    [reagent.core :as r]
    [reagent.dom :as d]
    [seven-guis.challenges.challenge1 :as chlg1]
-   [seven-guis.challenges.challenge2 :as chlg2]))
+   [seven-guis.challenges.challenge2 :as chlg2]
+   [seven-guis.challenges.challenge3 :as chlg3]
+   ))
 
 ;; -------------------------
 ;; Views
@@ -16,7 +18,9 @@
   [:div
    [caption]
    [chlg1/ui]
-   [chlg2/ui]])
+   [chlg2/ui]
+   [chlg3/ui]
+   ])
 
 ;; -------------------------
 ;; Initialize app
@@ -26,3 +30,10 @@
 
 (defn ^:export init! []
   (mount-root))
+(comment
+  
+  (require '[clojure.core.protocols :refer [Datafiable]]
+            '[portal.web :as p])
+  (p/open)
+  (add-tap #'p/submit)
+  )

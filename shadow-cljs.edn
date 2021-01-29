@@ -3,7 +3,8 @@
                       :output-dir "public/js"
                       :asset-path "/js"
                       :modules    {:app {:entries [seven-guis.core]}}
-                      :devtools   {:after-load seven-guis.core/mount-root}}}
+                      :devtools   {:after-load seven-guis.core/mount-root
+                                   :preloads [shadow.remote.runtime.cljs.browser]}}}
 
  :dev-http     {3000 {:root    "public"
                       :handler user/app}}}

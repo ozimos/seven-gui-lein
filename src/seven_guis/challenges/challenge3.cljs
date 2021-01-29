@@ -1,43 +1,83 @@
 (ns seven-guis.challenges.challenge3
   (:require [reagent.core :as r]
+            [clojure.string :as cstr]
+            [cljs-time.core :as timec]
+            [cljs-time.format :as formatc]
             [seven-guis.challenges.shared :as shd]))
 
-(def temp-vals (r/atom {}))
+(def flight-select (r/atom "start"))
+(def date-start (r/atom {}))
+(def date-return (r/atom {}))
 
-(defn cel->fah [c] {:c c :f (+ (* c 1.8) 32)})
+(def dformatter (formatc/formatter "yyyy.MM.dd"))
+(defn parse-date-string [v]
+  (formatc/parse dformatter v))
 
-(defn fah->cel [f] {:c (* (- f 32) 0.5556) :f f})
+(def input-attr {:style {:border-radius "5px"
+                                      :width "500px"
+                                      :margin "10px 20px"
+                                      :padding "0 10px"
+                                      :font-size "20px"
+                                      :height "60px"}})
 
-(defn make-change-handler [conv-fn] 
-  (fn [evt]
-    (.preventDefault evt)
-    (let [input (js/parseFloat (-> evt .-target .-value))]
-     (->> (if (js/Number.isNaN input) {:c "" :f ""}
-              (conv-fn input)) (reset! temp-vals)))))
 
-(defn temp-input [key conv-fn]
-  [:input {:type "text" :style {:border-radius "5px"
-                                :width "100px"
-                                :margin "0 20px"
-                                :padding "0 10px"
-                                :font-size "20px"
-                                :height "60px"}
-           :value (get @temp-vals key "")
-           :on-change (make-change-handler conv-fn)}])
+(def select-input-attr (assoc input-attr 
+                              :name "booking-select" 
+                              :on-change #(reset! flight-select (-> % .-target .-value))))
 
-(defn converter-component []
-  [:div shd/flex-attr 
-   [:span [temp-input :c cel->fah]
-    "Celsius = "]
-   [:span [temp-input :f fah->cel]
-    "Fahrenheit"]])
+(defn select-input []
+  [:select (assoc select-input-attr :value @flight-select)
+   [:option {:value "start"} "One Way Flight"]
+   [:option {:value "return"} "Return Flight"]])
+
+(defn valid-date? [d] (if (try (timec/after? (parse-date-string d) (timec/today))
+                               (catch :default _ false))
+                        {:date d :valid true} {:date d}))
+(defn cs [& names]
+  (cstr/join " " (filter identity names)))
+
+(def date-input-attr (assoc input-attr :type "text"))
+(defn date-input 
+  ([store] (date-input store nil))
+  ([store toggle]
+                  (let [{:keys [date valid]} @store]
+                    [:input (assoc date-input-attr :value date
+                                   :class (cs (when-not valid "ch3"))
+                                   :disabled (and toggle (= "start" @flight-select))
+                                   :on-change #(reset! store (valid-date? (-> % .-target .-value))))])))
+
+(defn booking-message []
+  (if (= :start @flight-select) (str "You have booked a one-way flight on " (:date @date-start))
+      (str "You have booked a return flight with start " (:date @date-start) " and return " (:date @date-return))))
+(defn booking-handler [evt]
+  (.preventDefault evt)
+  (js/alert (booking-message) ))
+(def button-input-attr (assoc input-attr :type "button" :value "Book"))
+(defn button-input []
+  [:input (assoc button-input-attr 
+                 :on-click booking-handler
+                 :disabled (or (try (timec/after?
+                                     (parse-date-string (:date @date-start))
+                                     (parse-date-string (:date @date-return)))
+                                    (catch :default _ false))
+                               (not-every? :valid [@date-start @date-return]))) ])
+
+(def booking-comp-attr (assoc-in shd/flex-attr [:style :flex-direction] "column") )
+(defn booking-component []
+  (let [current-date (formatc/unparse dformatter (timec/today))
+        date-init {:date current-date :valid true}]
+    (reset! date-start date-init)
+    (reset! date-return date-init))
+  [:div booking-comp-attr
+   [:label {:for "booking-select"} "Book your flight"]
+   [select-input] 
+   [date-input date-start] 
+   [date-input date-return true] 
+   [button-input] 
+   ])
 
 (defn ui []
   [:div
    [shd/challenge-section 3 "Flight Booker"]
-   [converter-component]])
+   [booking-component]])
 
-
-(comment
- 
-  )
