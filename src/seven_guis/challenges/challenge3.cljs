@@ -52,6 +52,7 @@
 (defn booking-handler [evt]
   (.preventDefault evt)
   (js/alert (booking-message) ))
+
 (def button-input-attr (assoc input-attr :type "button" :value "Book"))
 (defn button-input []
   [:input (assoc button-input-attr 

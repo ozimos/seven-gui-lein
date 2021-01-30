@@ -5,6 +5,7 @@
    [seven-guis.challenges.challenge1 :as chlg1]
    [seven-guis.challenges.challenge2 :as chlg2]
    [seven-guis.challenges.challenge3 :as chlg3]
+   [seven-guis.challenges.challenge4 :as chlg4]
    ))
 
 ;; -------------------------
@@ -20,6 +21,7 @@
    [chlg1/ui]
    [chlg2/ui]
    [chlg3/ui]
+   [chlg4/ui]
    ])
 
 ;; -------------------------
