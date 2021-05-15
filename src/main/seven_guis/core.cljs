@@ -6,6 +6,7 @@
    [seven-guis.challenges.challenge2 :as chlg2]
    [seven-guis.challenges.challenge3 :as chlg3]
    [seven-guis.challenges.challenge4 :as chlg4]
+   [seven-guis.challenges.challenge5 :as chlg5]
    ))
 
 ;; -------------------------
@@ -22,6 +23,7 @@
    [chlg2/ui]
    [chlg3/ui]
    [chlg4/ui]
+   [chlg5/ui]
    ])
 
 ;; -------------------------
@@ -32,6 +34,7 @@
 
 (defn ^:export init! []
   (mount-root))
+
 (comment
   
   (require '[clojure.core.protocols :refer [Datafiable]]
