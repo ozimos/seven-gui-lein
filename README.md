@@ -4,7 +4,7 @@ This project is an implementation of the [7GUIs challenge](https://eugenkiss.git
 ### Development mode
 ```
 npm install
-npx shadow-cljs watch app
+npm run dev
 ```
 open localhost:3000 on your browser
 start a ClojureScript REPL
