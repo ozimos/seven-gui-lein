@@ -57,6 +57,7 @@
 (defn button-input []
   [:input (assoc button-input-attr 
                  :on-click booking-handler
+                 :class "hover:cursor-pointer hover:bg-blue-500"
                  :disabled (or (try (timec/after?
                                      (parse-date-string (:date @date-start))
                                      (parse-date-string (:date @date-return)))

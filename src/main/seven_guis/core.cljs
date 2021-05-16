@@ -17,7 +17,7 @@
 
 
 (defn home-page []
-  [:div
+  [:div.mb-40
    [caption]
    [chlg1/ui]
    [chlg2/ui]

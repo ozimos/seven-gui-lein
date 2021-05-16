@@ -47,7 +47,11 @@
      [:div.flex.justify-between.mb-3 [countdown-component] [progress]]
      [:div.flex.justify-between.mb-3  "Duration" [slider]]
      [:div.flex.justify-center.mb-3
-      [:input.w-full.text-xl.rounded-lg.py-4 {:type "button" :value "Reset" :on-click (fn [_] (reset! seconds-elapsed 0) (stop-timer) (start-timer))}]]]
+      [:input.w-full.text-xl.rounded-lg.py-4 
+       {:class "hover:cursor-pointer hover:bg-blue-500" 
+        :type "button" 
+        :value "Reset" 
+        :on-click (fn [_] (reset! seconds-elapsed 0) (stop-timer) (start-timer))}]]]
     (finally stop-timer)))
 
 (defn ui []

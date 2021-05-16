@@ -8,7 +8,7 @@
 (defn counting-component []
   [:div shd/flex-attr
    [:p {:style {:font-size "40px" :margin "0 20px"}} @click-count]
-   [:input {:type "button" :value "Count" :style {:border-radius "10px" :padding "0 10px" :font-size "20px" :height "60px"}
+   [:input {:type "button" :class "hover:cursor-pointer hover:bg-blue-500" :value "Count" :style {:border-radius "10px" :padding "0 10px" :font-size "20px" :height "60px"}
             :on-click #(swap! click-count inc)}]])
 
 (defn ui []
